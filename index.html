@@ -37,7 +37,7 @@ function build(){scene.remove(room);room=new THREE.Group();scene.add(room);shell
  for(let a=0;a<5;a++)for(let b=0;b<4;b++){const x=-hw+W*(a+.5)/5,z=zb+L*(b+.5)/4;box(1.4,.02,1.4,M.sky,x,H-.012,z,shell);
   box(W/5-.05,.25,.1,M.ceil,x,H-.12,z-L/8,shell);box(.1,.25,L/4,M.ceil,x-W/10,H-.12,z,shell)}
  // top landing deck + slatted wall + speaker
- box(W,.08,1.6,M.wood,0,P.tiers*P.rise+.04-.04,zb+.8);box(W,P.tiers*P.rise,1.6,M.woodDark,0,P.tiers*P.rise/2-.04,zb+.8);
+ box(W,.08,1.6,M.wood,0,P.tiers*P.rise+.04-.04,zb+.8);box(W-.006,P.tiers*P.rise,1.6,M.woodDark,0,P.tiers*P.rise/2-.04,zb+.8);
  for(let x=-hw;x<hw;x+=.3)box(.06,3,.06,M.wallG,x,P.tiers*P.rise+1.5,zb+.05);box(.4,.6,.3,M.led,-hw+2,P.tiers*P.rise+2.6,zb+.25);
  // back wall: grey lower, beige upper
  const lowH=P.tiers*P.rise+3.2;box(W,lowH,.2,M.wallG,0,lowH/2,zb-.102);box(W,H-lowH,.2,M.wallB,0,lowH+(H-lowH)/2,zb-.102);
@@ -55,7 +55,7 @@ function build(){scene.remove(room);room=new THREE.Group();scene.add(room);shell
  // front step blocks on floor
  for(let k=0;k<3;k++)box(1.2,P.rise/2,.5,M.wood,sx0+3+k*4,P.rise/4,zf-P.flat+.3);
  // carpeted staircase: double steps
- const n=P.tiers*2;for(let i=0;i<n;i++){const h=(i+1)*P.rise/2;box(P.stairW,h,P.depth/2,M.carpet,-hw+P.stairW/2,h/2,zf-P.flat-i*P.depth/2-P.depth/4)}
+ const n=P.tiers*2;for(let i=0;i<n;i++){const h=(i+1)*P.rise/2;box(P.stairW-.01,h,P.depth/2,M.carpet,-hw+P.stairW/2+.005,h/2,zf-P.flat-i*P.depth/2-P.depth/4)}
  // right side: mezzanine glass + slats
  const xr=hw;box(.2,3.2,L,M.white,xr+.6,1.6,(zb+zf)/2).material=M.glass;
  box(1.2,.3,L,M.white,xr+.6,4.2,(zb+zf)/2);
