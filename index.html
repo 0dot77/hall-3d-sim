@@ -11,10 +11,10 @@ import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {PointerLockControls} from 'three/addons/controls/PointerLockControls.js';
 import GUI from 'lil-gui';
 const P={width:14.7,tiers:8,rise:0.42,depth:0.9,flat:5.5,ceiling:7.8,stairW:1.5,grid:true,walk:false,shell:false};
-const r=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(innerWidth,innerHeight);
+const r=new THREE.WebGLRenderer({antialias:true,logarithmicDepthBuffer:true,preserveDrawingBuffer:true});r.setPixelRatio(Math.min(devicePixelRatio,2));r.setSize(innerWidth,innerHeight);
 r.shadowMap.enabled=true;r.toneMapping=THREE.ACESFilmicToneMapping;document.body.appendChild(r.domElement);
 const scene=new THREE.Scene();scene.background=new THREE.Color(0xdcdcd6);
-const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.05,200);
+const cam=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,150);
 const orbit=new OrbitControls(cam,r.domElement);const fp=new PointerLockControls(cam,document.body);
 scene.add(new THREE.HemisphereLight(0xffffff,0x887766,1.4));
 const sun=new THREE.DirectionalLight(0xfff4e0,1.6);sun.position.set(3,14,6);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
@@ -34,13 +34,13 @@ function build(){scene.remove(room);room=new THREE.Group();scene.add(room);shell
  const zb=-bd,zf=P.flat;
  box(W,.05,L,M.floor,0,-.025,(zb+zf)/2);
  box(W,.1,L,M.ceil,0,H+.05,(zb+zf)/2,shell);
- for(let a=0;a<5;a++)for(let b=0;b<4;b++){const x=-hw+W*(a+.5)/5,z=zb+L*(b+.5)/4;box(1.4,.02,1.4,M.sky,x,H-.01,z,shell);
+ for(let a=0;a<5;a++)for(let b=0;b<4;b++){const x=-hw+W*(a+.5)/5,z=zb+L*(b+.5)/4;box(1.4,.02,1.4,M.sky,x,H-.012,z,shell);
   box(W/5-.05,.25,.1,M.ceil,x,H-.12,z-L/8,shell);box(.1,.25,L/4,M.ceil,x-W/10,H-.12,z,shell)}
  // top landing deck + slatted wall + speaker
  box(W,.08,1.6,M.wood,0,P.tiers*P.rise+.04-.04,zb+.8);box(W,P.tiers*P.rise,1.6,M.woodDark,0,P.tiers*P.rise/2-.04,zb+.8);
  for(let x=-hw;x<hw;x+=.3)box(.06,3,.06,M.wallG,x,P.tiers*P.rise+1.5,zb+.05);box(.4,.6,.3,M.led,-hw+2,P.tiers*P.rise+2.6,zb+.25);
  // back wall: grey lower, beige upper
- const lowH=P.tiers*P.rise+3.2;box(W,lowH,.2,M.wallG,0,lowH/2,zb-.1);box(W,H-lowH,.2,M.wallB,0,lowH+(H-lowH)/2,zb-.1);
+ const lowH=P.tiers*P.rise+3.2;box(W,lowH,.2,M.wallG,0,lowH/2,zb-.102);box(W,H-lowH,.2,M.wallB,0,lowH+(H-lowH)/2,zb-.102);
  const top=P.tiers*P.rise;box(1.6,2.2,.05,M.white,-2,top+1.1,zb+.01);box(.9,2.1,.05,new THREE.MeshStandardMaterial({color:0x333}),2.6,top+1.05,zb+.01);
  const clk=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.04,32),M.white);clk.rotation.x=Math.PI/2;clk.position.set(.6,top+2.6,zb+.03);room.add(clk);
  // left wall (stairs side) wood
@@ -64,14 +64,14 @@ function build(){scene.remove(room);room=new THREE.Group();scene.add(room);shell
  for(let z=zb;z<zf;z+=.45)box(.04,2.6,.12,M.woodDark,xr+.9,5.6,z);
  box(.2,H,L,M.wallB,xr+1.3,H/2,(zb+zf)/2,shell);
  // white parapet ledge along long side
- box(.3,1.1,bd,M.white,xr-.15,P.tiers*P.rise/2+.55,zb+bd/2);
+ box(.3,1.1,bd,M.white,xr+.153,P.tiers*P.rise/2+.55,zb+bd/2);
  // LED wall side
  box(W+1.4,H,.2,M.wallB,.7,H/2,zf+.1);
  box(8,3.5,.15,M.led,-1.5,2.5,zf-.08);
  box(1.6,.95,.08,M.led,4.2,1.4,zf-1.2);box(.08,.8,.08,M.white,4.2,.4,zf-1.2);
  box(.6,1.1,.45,M.woodDark,1.8,.55,zf-1.0);
  // entrance column, glass door, extinguisher (front-right)
- box(.45,H,.45,M.white,xr+.25,H/2,zf-1.6);box(.05,2.6,1.6,M.glass,xr+.9,1.3,zf-.9);box(3,2,.05,new THREE.MeshStandardMaterial({color:0xeef2f2,transparent:true,opacity:.8}),5,3,zf-.02);
+ box(.45,H,.45,M.white,xr+.25,H/2,zf-1.6);box(.05,2.6,1.6,M.glass,xr+.9,1.3,zf-.9);box(3,2,.05,new THREE.MeshStandardMaterial({color:0xeef2f2,transparent:true,opacity:.8}),5,3,zf-.03);
  const ex=new THREE.Mesh(new THREE.CylinderGeometry(.08,.08,.5,16),M.red);ex.position.set(xr-.05,.25,zf-1.9);room.add(ex);
  grid.position.set(0,.01,(zb+zf)/2);grid.scale.set(Math.ceil(W),1,Math.ceil(L));
  info();
@@ -79,7 +79,7 @@ function build(){scene.remove(room);room=new THREE.Group();scene.add(room);shell
 const grid=new THREE.GridHelper(1,1,0xff3333,0x3366ff);grid.material.opacity=.5;grid.material.transparent=true;
 // unit grid: rebuild as 1m spacing
 function mkGrid(){scene.remove(grid);}
-let g1;function updGrid(){if(g1)scene.remove(g1);const s=Math.ceil(Math.max(D.W,D.L))+2;g1=new THREE.GridHelper(s,s,0xff3333,0x3366ff);g1.material.transparent=true;g1.material.opacity=.45;g1.position.set(0,.012,(P.flat-P.tiers*P.depth)/2);g1.visible=P.grid;scene.add(g1)}
+let g1;function updGrid(){if(g1)scene.remove(g1);const s=Math.ceil(Math.max(D.W,D.L))+2;g1=new THREE.GridHelper(s,s,0xff3333,0x3366ff);g1.material.transparent=true;g1.material.opacity=.45;g1.position.set(0,.02,(P.flat-P.tiers*P.depth)/2);g1.visible=P.grid;scene.add(g1)}
 function info(){document.getElementById('info').innerHTML=`<b>강당 3D (추정)</b><br>가로 ${D.W.toFixed(1)}m × 깊이 ${D.L.toFixed(1)}m × 천장 ${D.H.toFixed(1)}m<br>계단석 ${P.tiers}단 · 단높이 ${P.rise}m · 단깊이 ${P.depth}m (최상단 ${D.bleacherH.toFixed(2)}m)<br>앞 평지 ${P.flat}m · 그리드 1m<br>${P.walk?'WASD 이동 · 클릭으로 시점 잠금 · Esc':'드래그 회전 · 휠 줌'}`}
 function rebuild(){build();updGrid()}rebuild();
 cam.position.set(4,4,P.flat+0.0-0.5);cam.position.set(5.5,3.2,P.flat-0.6);orbit.target.set(-1,1.2,-3);orbit.update();
