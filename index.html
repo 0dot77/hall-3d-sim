@@ -1,7 +1,7 @@
 <!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Hall 3D Sim</title>
 <style>body{margin:0;overflow:hidden;font-family:system-ui;background:#111}#info{position:fixed;left:10px;top:10px;color:#fff;background:#0009;padding:8px 10px;border-radius:6px;font-size:12px;line-height:1.5}
-#gal{position:fixed;left:10px;bottom:10px;display:flex;gap:4px}#gal img{width:80px;height:60px;object-fit:cover;border:2px solid #fff6;cursor:pointer}
+#gal{position:fixed;left:10px;bottom:10px;z-index:1;display:flex;gap:4px}#gal img{width:80px;height:60px;object-fit:cover;border:2px solid #fff6;cursor:pointer}
 #big{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center}#big img{max-width:90%;max-height:90%}</style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/","lil-gui":"https://cdn.jsdelivr.net/npm/lil-gui@0.19/+esm"}}</script>
 </head><body><div id="info"></div><div id="gal"></div><div id="big" onclick="this.style.display='none'"><img></div>
@@ -99,6 +99,7 @@ function floorH(x,z){const zf=P.flat;if(z>zf-P.flat)return 0;const i=Math.min(P.
 (function loop(){requestAnimationFrame(loop);const dt=clock.getDelta();
  if(P.walk&&fp.isLocked){const s=3*dt;if(keys.KeyW)fp.moveForward(s);if(keys.KeyS)fp.moveForward(-s);if(keys.KeyA)fp.moveRight(-s);if(keys.KeyD)fp.moveRight(s);
   cam.position.y=floorH(cam.position.x,cam.position.z)+1.6}
- r.render(scene,cam)})();
+ if(window.H&&H.tick)H.tick();r.render(scene,(window.H&&H.viewCam)||cam)})();
+window.H={THREE,scene,cam,orbit,r,P,floorH,gui,getD:()=>D,getRoom:()=>room,viewCam:cam};import('./editor.js');
 addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight)});
 </script></body></html>
